@@ -1,0 +1,91 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  width: 100%;
+}
+
+.container {
+  min-height: 100vh;
+  background-color: #ccc;
+}
+.container #header {
+  width: 100%;
+  background-color: #0c0402;
+  height: 50px;
+}
+.container #header .header__container {
+  display: flex;
+  justify-content: space-between;
+  line-height: 50px;
+}
+.container #header .header__container .logo {
+  color: white;
+  padding-left: 20px;
+}
+.container #header .header__container .navigation {
+  color: white;
+  display: inline-block;
+  padding-right: 20px;
+}
+.container #header .header__container .navigation li {
+  display: inline;
+  padding: 5px 15px;
+}
+.container #header .header__container .navigation li a {
+  color: white;
+  text-decoration: none;
+}
+.container #header .header__container .navigation li a:hover {
+  opacity: 0.7;
+}
+.container #header .header__container .navigation li .user-icon {
+  padding: 5px;
+  border: 1px solid;
+  border-radius: 999999px;
+}
+.container #content {
+  margin: 0 200px;
+  padding-top: 70px;
+}
+.container #content .content__container {
+  text-align: center;
+}
+.container #content .content__container .card {
+  display: flex;
+}
+.container #content .content__container .card .card__left .card__img img {
+  max-width: 100%;
+  max-height: 100%;
+}
+.container #content .content__container .card .card__right {
+  padding-left: 40px;
+}
+.container #content .content__container .card .card__right .card__desc {
+  padding: 10px 0;
+  font-size: larger;
+}
+.container #content .content__container .card .card__right .card__action {
+  display: flex;
+}
+.container #content .content__container .card .card__right .card__action .card__action--add {
+  background-color: rgb(0, 0, 255);
+  color: white;
+  width: 50%;
+  cursor: pointer;
+  padding: 10px 0;
+  margin-right: 2px;
+  border: none;
+}
+.container #content .content__container .card .card__right .card__action .card__action--book {
+  background-color: rgb(255, 0, 0);
+  color: white;
+  width: 50%;
+  cursor: pointer;
+  padding: 10px 0;
+  margin-left: 2px;
+  border: none;
+}/*# sourceMappingURL=detail.css.map */
