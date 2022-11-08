@@ -16,16 +16,6 @@
   require './connection/connection.php';
   session_start();
   date_default_timezone_set('Asia/Ho_Chi_Minh');
-  // $store = mysqli_query($conn, "SELECT * FROM store");
-  // $location = (isset($_GET['location'])) ? $_GET['location'] : '';
-  // $auth = "<script>document.write(localStorage.getItem('auth'));</script>";
-  // $tin = (isset($_SESSION['tin'])) ? $_SESSION['tin'] : '';
-  // echo $auth;
-  // if (!empty($location)) {
-  //   $type = mysqli_query($conn, "SELECT Type, Count(Type) as Quantity FROM bicyclemodel 
-  //   INNER JOIN store_bicyclemodel ON bicyclemodel.UniqueName = store_bicyclemodel.Name_BicycleModel 
-  //   INNER JOIN store ON store_bicyclemodel.Name_Store = store.UniqueName AND store.Address LIKE '%$location%'");
-  // }
   if (isset($_POST['addBtn'])) {
     $location = (isset($_POST['location'])) ? $_POST['location'] : '';
     // $_SESSION['location'] = $_POST['location'];
@@ -67,6 +57,9 @@
           </li>
           <li class="cart <?php if(isset($_SESSION['auth']) && $_SESSION['auth']==1) {echo "show";}else{echo "hide";} ?>">
             <a href="./pages/cart/cart.php"><i class="fa-solid fa-cart-shopping"></i></a>
+          </li>
+          <li class="login <?php if(isset($_SESSION['auth']) && $_SESSION['auth']==1) {echo "hide";}else{echo "show";} ?>">
+            <a href="./pages/account/login.php">LOGIN</a>
           </li>
         </div>
       </div>

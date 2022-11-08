@@ -33,10 +33,10 @@
         }
         }
         if($result && $result2 && $result3 && $result4 ) {
+            echo "<script> alert('Your reservation #$id has been received'); window.location='../../index.php'</script>";
             unset($_SESSION['cart']);
             unset($_SESSION['reservation']);
             unset($_SESSION['quantity']);
-            echo "<script> alert('Your reservation has been received'); window.location='../../index.php'</script>";
         }
     }
     ?>

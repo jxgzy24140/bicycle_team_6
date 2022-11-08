@@ -15,19 +15,18 @@
   session_start();
   require '../../connection/connection.php';
   $location = (isset($_GET['l'])) ? $_GET['l'] : '';
-  var_dump($_SESSION['location']);
   if (isset($location) && !empty($location)) {
     if (isset($_SESSION['location'])) {
       unset($_SESSION['location']);
     }
     $_SESSION['location'] = $location;
-    if(!isset($_SESSION['location']) && !empty($_SESSION['location'])) {
+  }
+    if(isset($_SESSION['location']) && empty($_SESSION['location'])) {
       $temp = $_SESSION['location'];
       $bicycle = mysqli_query($conn, "SELECT DISTINCT bicycle.Status, bicyclemodel.UniqueName, bicyclemodel.image FROM bicyclemodel INNER JOIN bicycle ON bicycle.UniqueName = bicyclemodel.UniqueName INNER JOIN store_bicyclemodel ON bicyclemodel.UniqueName = store_bicyclemodel.Name_BicycleModel INNER JOIN store ON store_bicyclemodel.Name_Store = store.UniqueName AND store.Address LIKE '%$temp%' AND bicycle.Status = '1';");
     } else {
       $bicycle = mysqli_query($conn, "SELECT DISTINCT bicycle.Status, bicyclemodel.UniqueName, bicyclemodel.image FROM bicyclemodel INNER JOIN bicycle ON bicycle.UniqueName = bicyclemodel.UniqueName INNER JOIN store_bicyclemodel ON bicyclemodel.UniqueName = store_bicyclemodel.Name_BicycleModel INNER JOIN store ON store_bicyclemodel.Name_Store = store.UniqueName AND store.Address LIKE '%$location%' AND bicycle.Status = '1';");
     }
-  }
   ?>
   <div class="container">
     <div id="header">
@@ -52,7 +51,7 @@
               } ?>
             </select>
           </li>
-          <li><a href="">HOME</a></li>
+          <li><a href="../../index.php">HOME</a></li>
           <li><a href="">BIKE</a></li>
           <li><a href="">ABOUT</a></li>
           <li><a href="">CONTACT</a></li>
