@@ -13,7 +13,10 @@
 
 <body>
     <?php
-    require '../../connection/connection.php';
+    // require '../../connection/connection.php';
+    include '../../connection/connection.php';
+    $con = new Connection();
+    $conn = $con->connect();
     session_start();
     $location = (isset($_SESSION['location'])) ? $_SESSION['location'] : '';
     //unset($_SESSION['reservation']);

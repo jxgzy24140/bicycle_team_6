@@ -12,7 +12,10 @@
 
 <body>
     <?php
-    require '../../connection/connection.php';
+    // require '../../connection/connection.php';
+    include '../../connection/connection.php';
+    $con = new Connection();
+    $conn = $con->connect();
     session_start();
     $tin = $_SESSION['tin'];
     $id = $_GET['id'];

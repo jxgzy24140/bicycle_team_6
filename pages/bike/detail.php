@@ -12,7 +12,10 @@
 
 <body>
     <?php
-    require '../../connection/connection.php';
+    // require '../../connection/connection.php';
+    include '../../connection/connection.php';
+    $con = new Connection();
+    $conn = $con->connect();
     session_start();
     $name = $_GET['name'];
     $bicycle = mysqli_query($conn, "SELECT * FROM bicyclemodel WHERE UniqueName ='$name'");

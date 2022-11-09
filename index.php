@@ -13,7 +13,10 @@
 <body>
 
   <?php
-  require './connection/connection.php';
+  // require './connection/connection.php';
+  include './connection/connection.php';
+  $con = new Connection();
+  $conn = $con->connect();
   session_start();
   date_default_timezone_set('Asia/Ho_Chi_Minh');
   if (isset($_POST['addBtn'])) {

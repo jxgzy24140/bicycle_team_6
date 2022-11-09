@@ -12,7 +12,10 @@
 
 <body>
   <?php
-  require '../../connection/connection.php';
+  // require '../../connection/connection.php';
+  include '../../connection/connection.php';
+  $con = new Connection();
+  $conn = $con->connect();
   if (isset($_POST['loginBtn'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];

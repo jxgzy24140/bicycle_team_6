@@ -11,33 +11,84 @@
 
 <body>
     <?php
-    require '../../connection/connection.php';
+    // require '../../connection/connection.php';
+    include '../../connection/connection.php';
+    $con = new Connection();
+    $conn = $con->connect();
     session_start();
+    class Reservation {
+        public $tin;
+        public $nameStore;
+        public $time;
+
+        public function __construct($tin, $nameStore, $time)
+        {
+          $this->tin = $tin;
+          $this->nameStore = $nameStore;
+          $this->time = $time;
+        }
+
+        function connect()
+        {
+          $conn = mysqli_connect('localhost', 'root', '', 'rent_bicycle');
+          return $conn;
+        }
+
+        public function insertReservation() {
+            $conn = $this->connect();
+            $sql = "INSERT INTO reservation(TIN,Name_Store,Time) VALUES('$this->tin','$this->nameStore','$this->time')";
+            mysqli_query($conn, $sql);
+            return mysqli_insert_id($conn);
+        }
+
+        public function getLastId() {
+            $conn = $this->connect();
+            $id = $conn->insert_id;
+            return $id;
+        }
+
+        public function insertReserBicycle($id, $indentifyNumber) {
+            $conn = $this->connect();
+            $sql = "INSERT INTO reservation_bicycle(ID,IdentifyNumber) VALUES('$id', '$indentifyNumber')";
+            mysqli_query($conn, $sql);
+        }
+
+        public function insertReserBicycleModel($id, $name) {
+            $conn = $this->connect();
+            $sql = "INSERT INTO reservation_bicyclemodel(ID,Name_BicycleModel) VALUES('$id', '$name')";
+            mysqli_query($conn, $sql);
+        }
+
+        public function updateBicycle($id) {
+            $conn = $this->connect();
+            $sql = "UPDATE bicycle SET bicycle.Status = '0' WHERE IdentifyNumber ='$id'";
+            mysqli_query($conn, $sql);
+        }
+    }
+
     if (isset($_POST['submit-reser'])) {
         $TIN = $_SESSION['tin'];
         $location = $_SESSION['location'];  
         $name_store = mysqli_query($conn, "SELECT * FROM store WHERE Address LIKE '%$location%'");
         while($row = mysqli_fetch_array($name_store)) { $Name_Store = $row['UniqueName'];}
         $Time = $_POST['date'];
-        $result = mysqli_query($conn, "INSERT INTO reservation(TIN,Name_Store,Time) VALUES('$TIN','$Name_Store','$Time')");
-        $id = mysqli_insert_id($conn);
+        $newReser = new Reservation($TIN, $Name_Store, $Time);
+        $id = $newReser->insertReservation();
         foreach ($_SESSION['reservation'] as $key => $value) {
-            $result2 = mysqli_query($conn, "INSERT INTO reservation_bicyclemodel(ID,Name_BicycleModel) VALUES ('$id','$key')");
+            $result2 = $newReser->insertReserBicycleModel($id, $key);
             for ($i = 0 ;$i < $_SESSION['quantity'][$key]; $i++) {
                 $bicycle = mysqli_query($conn, "SELECT * FROM bicycle INNER JOIN store_bicycle ON bicycle.IdentifyNumber = store_bicycle.IdentifyNumber WHERE store_bicycle.Name_Store = '$Name_Store' AND bicycle.UniqueName LIKE '%$key%' AND bicycle.Status = '1' ORDER BY bicycle.IdentifyNumber ASC LIMIT 1;");
                 while($row = mysqli_fetch_array($bicycle)) {
                 $bicycle_key = $row['IdentifyNumber'];
             }
-            $result3 = mysqli_query($conn, "UPDATE bicycle SET bicycle.Status = '0' WHERE IdentifyNumber ='$bicycle_key'");
-            $result4 = mysqli_query($conn,"INSERT INTO reservation_bicycle (ID,IdentifyNumber) VALUES('$id','$bicycle_key')");
+            $result3 = $newReser->updateBicycle($bicycle_key);
+            $result4 = $newReser->insertReserBicycle($id, $bicycle_key);
         }
         }
-        if($result && $result2 && $result3 && $result4 ) {
             echo "<script> alert('Your reservation #$id has been received'); window.location='../../index.php'</script>";
             unset($_SESSION['cart']);
             unset($_SESSION['reservation']);
             unset($_SESSION['quantity']);
-        }
     }
     ?>
     <div class="reser-popup hide">

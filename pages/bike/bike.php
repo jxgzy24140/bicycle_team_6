@@ -13,7 +13,10 @@
 <body>
   <?php
   session_start();
-  require '../../connection/connection.php';
+  // require '../../connection/connection.php';
+  include '../../connection/connection.php';
+  $con = new Connection();
+  $conn = $con->connect();
   $location = (isset($_GET['l'])) ? $_GET['l'] : '';
   if (isset($location) && !empty($location)) {
     if (isset($_SESSION['location'])) {

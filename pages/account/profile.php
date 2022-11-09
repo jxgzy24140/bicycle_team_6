@@ -12,8 +12,11 @@
 
 <body>
   <?php
-  require '../../connection/connection.php';
+  // require '../../connection/connection.php';
   session_start();
+  include '../../connection/connection.php';
+  $con = new Connection();
+  $conn = $con->connect();
   $tin = $_SESSION['tin'];
   $reservation = mysqli_query($conn, "SELECT * FROM `reservation` WHERE `TIN` = '$tin'");
   if (isset($_POST['logout'])) {
