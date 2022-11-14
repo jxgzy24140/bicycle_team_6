@@ -20,8 +20,8 @@
   $tin = $_SESSION['tin'];
   $reservation = mysqli_query($conn, "SELECT * FROM `reservation` WHERE `TIN` = '$tin'");
   if (isset($_POST['logout'])) {
+    echo "<script>window.location = '../../index.php'</script>";
     session_destroy();
-    echo "<script>window.location = '../../index.php</script>";
   }
   ?>
   <div class="container">

@@ -82,9 +82,9 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="card__action">
+                                <div class="card__action" style="display: block">
                                     <button onclick="alert('Success')" type="submit" name="add" class="card__action--add">Add To Cart</button>
-                                    <button type="submit" name="book" class="card__action--book">Book Now</button>
+                                    <!-- <button type="submit" name="book" class="card__action--book">Book Now</button> -->
                                 </div>
                             </div>
                         </div>
