@@ -105,4 +105,52 @@ class StoreDAO
             echo $th;
         }
     }
+
+    public static function getAllStoreHasBicycleModel($nameBicycleModel)
+    {
+        StoreDAO::$conn = Connector::Connect();
+        try {
+            $stmt = StoreDAO::$conn->prepare("  SELECT SM.Name_Store AS UniqueName, S.Address AS Address
+                                                FROM Store_BicycleModel SM, Store S
+                                                WHERE SM.Name_Store = S.UniqueName
+                                                AND SM.Name_BicycleModel = ?
+                                            ");
+            $stmt->bind_param("s", $nameBicycleModel);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $listStores = [];
+            while($row = $result->fetch_assoc())
+            {
+                $listStores[] = new Store($row);
+            }
+            return $listStores;
+        } catch (\Throwable $th) {
+            //throw $th;
+            echo $th;
+        }
+    }
+
+    public function getNumberOfBicycleBelongToSpecificModel($nameBicycleModel)
+    {
+        StoreDAO::$conn = Connector::Connect();
+        try {
+            $stmt = StoreDAO::$conn->prepare("  SELECT COUNT(Bicycle.IdentifyNumber) AS Quantity
+                                                FROM Store_Bicycle, Bicycle
+                                                WHERE Store_Bicycle.IdentifyNumber = Bicycle.IdentifyNumber
+                                                AND Bicycle.Status = 1
+                                                AND Store_Bicycle.Name_Store = ?
+                                                AND Bicycle.UniqueName = ?
+                                            ");
+            $stmt->bind_param("ss", $this->store->uniqueName, $nameBicycleModel);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $quantity = $result->fetch_assoc();
+            return $quantity["Quantity"];
+        } catch (\Throwable $th) {
+            //throw $th;
+            echo $th;
+        }
+    }
+
+    
 }

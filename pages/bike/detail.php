@@ -13,18 +13,22 @@
 <body>
     <?php
     // require '../../connection/connection.php';
-    include '../../connection/connection.php';
-    $con = new Connection();
-    $conn = $con->connect();
+    // include '../../connection/connection.php';
+    include_once($_SERVER["DOCUMENT_ROOT"] . '/rent_bicycle/DAO/StoreDAO.php');
+    include_once($_SERVER["DOCUMENT_ROOT"] . '/rent_bicycle/DAO/BicycleModelDAO.php');
+    // $con = new Connection();
+    // $conn = $con->connect();
     session_start();
-    $name = $_GET['name'];
-    $bicycle = mysqli_query($conn, "SELECT * FROM bicyclemodel WHERE UniqueName ='$name'");
-    $store = mysqli_query($conn, " SELECT DISTINCT store_bicyclemodel.Name_Store, store.Address FROM store_bicyclemodel, store, store_bicycle WHERE store_bicyclemodel.Name_BicycleModel = '$name' AND store_bicyclemodel.Name_Store = store.UniqueName AND store_bicyclemodel.Name_Store = store_bicycle.Name_Store;");
+    $nameBicycleModel = $_GET['name'];
+    // $bicycle = mysqli_query($conn, "SELECT * FROM bicyclemodel WHERE UniqueName ='$name'");
+    // $store = mysqli_query($conn, " SELECT DISTINCT store_bicyclemodel.Name_Store, store.Address FROM store_bicyclemodel, store, store_bicycle WHERE store_bicyclemodel.Name_BicycleModel = '$name' AND store_bicyclemodel.Name_Store = store.UniqueName AND store_bicyclemodel.Name_Store = store_bicycle.Name_Store;");
+    $bicycleModel = BicycleModelDAO::getBicycleModel($nameBicycleModel);
+    $listStores = StoreDAO::getAllStoreHasBicycleModel($bicycleModel->uniqueName);
     if(isset($_POST['add'])) {
         if(!isset($_SESSION['cart'])) {
             $_SESSION['cart'] = array();
         }
-        $_SESSION['cart'][$name] = 1;
+        $_SESSION['cart'][$nameBicycleModel] = 1;
     }
     ?>
     <div class="container">
@@ -49,7 +53,7 @@
         </div>
         <div id="content">
             <div class="content__container">
-                <?php while ($card_row = mysqli_fetch_array($bicycle)) { ?>
+                <?php  ?>
                     <form action="" method="POST">
                     <div class="card">
                             <div class="card__left">
@@ -59,26 +63,28 @@
                             </div>
                             <div class="card__right">
                                 <div class="card__title">
-                                    <h2>Name: <?php echo $card_row['UniqueName'] ?></h2>
-                                    <p>Type: <?php echo $card_row['Type'] ?></p>
+                                    <h2>Name: <?php echo $bicycleModel->uniqueName ?></h2>
+                                    <p>Type: <?php echo $bicycleModel->type ?></p>
                                 </div>
                                 <div class="card__desc">
                                     <p class="desc__title">List store in stock</p>
                                     <div class="desc location">
                                         <ul>
-                                            <?php while ($row = mysqli_fetch_array($store)) {
-                                                $name_store = $row['Name_Store'];
-                                                $query = "SELECT COUNT(bicycle.UniqueName) as quantity FROM bicycle INNER JOIN store_bicycle 
-                                                ON bicycle.IdentifyNumber = store_bicycle.IdentifyNumber WHERE store_bicycle.Name_Store = '$name_store' 
-                                                AND bicycle.UniqueName LIKE '%$name%' AND bicycle.Status = '1';";
-                                                $quantity = mysqli_query($conn, $query);
-                                                while($q = mysqli_fetch_array($quantity)) {
-                                                    if($q['quantity'] != 0) {?>
-                                                <li><?php  echo $row['Name_Store'];
+                                            <?php foreach($listStores as $store) {
+                                                // $name_store = $row['Name_Store'];
+                                                // $query = "SELECT COUNT(bicycle.UniqueName) as quantity FROM bicycle INNER JOIN store_bicycle 
+                                                // ON bicycle.IdentifyNumber = store_bicycle.IdentifyNumber WHERE store_bicycle.Name_Store = '$name_store' 
+                                                // AND bicycle.UniqueName LIKE '%$name%' AND bicycle.Status = '1';";
+                                                // $quantity = mysqli_query($conn, $query);
+                                                $storeDAO = new StoreDAO($store);
+                                                $quantity = $storeDAO->getNumberOfBicycleBelongToSpecificModel($bicycleModel->uniqueName);
+                                                
+                                                    if($quantity != 0) {?>
+                                                <li><?php  echo $store->uniqueName;
                                                     echo "\x20", "- ";
-                                                    echo $row['Address'] ?>
-                                                    - Instock: <?php echo $q['quantity'] ?></li>
-                                            <?php } } } ?>
+                                                    echo $store->address ?>
+                                                    - Instock: <?php echo $quantity ?></li>
+                                            <?php } }  ?>
                                         </ul>
                                     </div>
                                 </div>
@@ -89,7 +95,7 @@
                             </div>
                         </div>
                     </form>
-                <?php } ?>
+                <?php  ?>
             </div>
         </div>
     </div>

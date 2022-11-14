@@ -8,7 +8,7 @@ class Type
         $this->properties['name'] = $data['Name'];
     }
 
-    public function __get($name)
+    public function &__get($name)
     {
         if (!array_key_exists($name, $this->properties))
             throw new Exception("Trying to access non-existing property $name");
