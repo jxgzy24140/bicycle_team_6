@@ -20,6 +20,7 @@
     // $con = new Connection();
     // $conn = $con->connect();
     session_start();
+    $_SESSION['quantity'] = array();
     $location = (isset($_SESSION['location'])) ? $_SESSION['location'] : '';
     //unset($_SESSION['reservation']);
     if (!empty($location) && isset($_SESSION['cart'])) {
