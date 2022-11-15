@@ -85,9 +85,11 @@
                 <form method="POST" action="" class="inputForm">
                     <div class="form-group">
                         <label for="location">PICK-UP LOCATION</label>
-                        <select class="location" name="location" id="location" value="123">
+                        <select class="location" name="location" id="location">
                             <option disabled checked="true" selected>
+                            <?php if(isset($_SESSION['location']) && !empty($_SESSION['location'])) { echo $_SESSION['location']; } else { ?>
                                 --CHOOSE LOCATION STORE--
+                                <?php } ?>
                             </option>
                             <?php
                             $listStores = StoreDAO::getAllStore();

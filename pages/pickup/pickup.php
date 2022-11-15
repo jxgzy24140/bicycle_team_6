@@ -57,6 +57,8 @@
             echo "<script>alert('This reservation not exist!')</script>";
         }
         $check = mysqli_query($conn, "SELECT * FROM return_infor WHERE ID = '$id'");
+        $check2 = mysqli_query($conn, "SELECT * FROM pickup_infor WHERE ID = '$id'");
+
     }
     if (isset($_POST['submit-pickup'])) {
         $id = $_GET['id'];
@@ -70,6 +72,9 @@
             $IdentifyNum = $row['IdentifyNumber'];
             $result = mysqli_query($conn, "INSERT INTO pickup_infor_bicycle (ID,IdentifyNumber) VALUES ('$id','$IdentifyNum')");
         }
+        $delete_reservation_bicycle = mysqli_query($conn, "DELETE FROM reservation_bicycle WHERE ID = '$id' ");
+        $delete_reservation_bicyclemodel = mysqli_query($conn, "DELETE FROM reservation_bicyclemodel WHERE ID = '$id' ");
+        $delete_reservation = mysqli_query($conn, "DELETE FROM reservation WHERE ID = '$id' ");
         echo "<script>window.location = 'pickup.php'</script>";
     }
     ?>
@@ -101,7 +106,7 @@
                         <label for="">Return Date: </label>
                         <input type="date" name="return-date">
                         <div style="padding: 20px">
-                            <input type="submit" name="submit-pickup" value="Confirm" <?php if (isset($check) && mysqli_num_rows($check) > 0) {
+                            <input type="submit" name="submit-pickup" value="Confirm" <?php if (isset($check) && mysqli_num_rows($check) > 0 || isset($check2) && mysqli_num_rows($check2) > 0) {
                                                                                             echo "disabled";
                                                                                         } ?>>
                         </div>

@@ -91,7 +91,12 @@
                         </table>
                         <div class="cancel" style="margin-top: 20px" onSubmit="if(!confirm('Delete This Reservation ?')){return false;}">
                             <form action="" method="POST">
+                                <?php
+                                $stmt = mysqli_query($conn, "SELECT * FROM pickup_infor INNER JOIN reservation ON pickup_infor.ID = reservation.ID WHERE reservation.TIN = '$tin'");
+                                if(mysqli_num_rows($stmt) == 0) {
+                                ?>
                                 <button type="submit" name="rmv-btn">CANCEL THIS RESERVATION</button>
+                                <?php } ?>
                             </form>
                         </div>
                     <?php } ?>

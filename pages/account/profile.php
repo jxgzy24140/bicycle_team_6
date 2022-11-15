@@ -18,6 +18,7 @@
   $con = new Connection();
   $conn = $con->connect();
   $tin = $_SESSION['tin'];
+  $check = mysqli_query($conn, "SELECT * FROM return_infor INNER JOIN reservation ON return_infor.ID = reservation.ID WHERE reservation.TIN = '$tin'");
   $reservation = mysqli_query($conn, "SELECT * FROM `reservation` WHERE `TIN` = '$tin'");
   if (isset($_POST['logout'])) {
     echo "<script>window.location = '../../index.php'</script>";
@@ -53,7 +54,7 @@
               <tr>
                 <th scope="col">Reservation ID</th>
                 <th scope="col">Name Store</th>
-                <th scope="col">Time</th>
+                <th scope="col">Pickup Time</th>
                 <th scope="col">Detail</th>
               </tr>
             </thead>

@@ -37,7 +37,10 @@
         $_SESSION['location'] = $address;
         $store = StoreDAO::getStoreByAddress($address);
         $listBicycleModels = StoreDAO::getAllBicycleModelBelongToStore($store->address);
-
+    } else {
+        $address = $_SESSION['location'];
+        $store = StoreDAO::getStoreByAddress($address);
+        $listBicycleModels = StoreDAO::getAllBicycleModelBelongToStore($store->address);
     }
     ?>
     <div class="container">
