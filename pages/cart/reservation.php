@@ -71,7 +71,10 @@
         $TIN = $_SESSION['tin'];
         $location = $_SESSION['location'];  
         $name_store = mysqli_query($conn, "SELECT * FROM store WHERE Address LIKE '%$location%'");
-        while($row = mysqli_fetch_array($name_store)) { $Name_Store = $row['UniqueName'];}
+        while($row = mysqli_fetch_array($name_store)) 
+        { 
+            $Name_Store = $row['UniqueName'];
+        }
         $Time = $_POST['date'];
         $newReser = new Reservation($TIN, $Name_Store, $Time);
         $id = $newReser->insertReservation();
@@ -81,11 +84,11 @@
                 echo "key: ",$key;
                 $bicycle = mysqli_query($conn, "SELECT * FROM bicycle INNER JOIN store_bicycle ON bicycle.IdentifyNumber = store_bicycle.IdentifyNumber WHERE store_bicycle.Name_Store = '$Name_Store' AND bicycle.UniqueName LIKE '%$key%' AND bicycle.Status = '1' ORDER BY bicycle.IdentifyNumber ASC LIMIT 1;");
                 while($row = mysqli_fetch_array($bicycle)) {
-                $bicycle_key = $row['IdentifyNumber'];
+                    $bicycle_key = $row['IdentifyNumber'];
+                }
+                $result3 = $newReser->updateBicycle($bicycle_key);
+                $result4 = $newReser->insertReserBicycle($id, $bicycle_key);
             }
-            $result3 = $newReser->updateBicycle($bicycle_key);
-            $result4 = $newReser->insertReserBicycle($id, $bicycle_key);
-        }
         }
             echo "<script> alert('Your reservation #$id has been received'); window.location='../../index.php'</script>";
             unset($_SESSION['cart']);
