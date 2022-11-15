@@ -16,6 +16,7 @@
     $con = new Connection();
     $conn = $con->connect();
     session_start();
+    // var_dump($_SESSION['quantity']['Martin-MT680']);
     class Reservation {
         public $tin;
         public $nameStore;
@@ -77,6 +78,7 @@
         foreach ($_SESSION['reservation'] as $key => $value) {
             $result2 = $newReser->insertReserBicycleModel($id, $key);
             for ($i = 0 ;$i < $_SESSION['quantity'][$key]; $i++) {
+                echo "key: ",$key;
                 $bicycle = mysqli_query($conn, "SELECT * FROM bicycle INNER JOIN store_bicycle ON bicycle.IdentifyNumber = store_bicycle.IdentifyNumber WHERE store_bicycle.Name_Store = '$Name_Store' AND bicycle.UniqueName LIKE '%$key%' AND bicycle.Status = '1' ORDER BY bicycle.IdentifyNumber ASC LIMIT 1;");
                 while($row = mysqli_fetch_array($bicycle)) {
                 $bicycle_key = $row['IdentifyNumber'];
@@ -104,12 +106,12 @@
                         <p>Gear: <?php echo $row['Gear'] ?></p>
                         <p>Quantity: <?php echo $_POST[$key] ?></p>
                         <?php if(!isset($_SESSION['quantity'])) { $_SESSION['quantity'] = array(); } else { $_SESSION['quantity'][$uniqueName] = $_POST[$key];} ?>
+                        
                     </div>
             <?php }
             }  ?>
             <div class="form-group">
                 <p>PICK-UP LOCATION: <?php echo $_SESSION['location'] ?></p>
-                <?php echo $_SESSION['tin'] ?>
             </div>
             <div class="form-group">
                 <label for="">PICK-UP DATE: </label>

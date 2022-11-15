@@ -26,9 +26,9 @@
             $IdentifyNum = $row['IdentifyNumber'];
             $result = mysqli_query($conn, "UPDATE bicycle SET bicycle.Status = '1' WHERE bicycle.IdentifyNumber = '$IdentifyNum'");
         }
-        $delete_reservation_bicyclemodel = mysqli_query($conn, "DELETE FROM reservation_bicyclemodel WHERE ID ='$id'");
-        $delete_reservation_bicycle = mysqli_query($conn, "DELETE FROM reservation_bicycle WHERE ID ='$id'");
-        $delete_reservation = mysqli_query($conn, "DELETE FROM reservation WHERE ID ='$id'");
+        $delete_reservation_bicycle = mysqli_query($conn, "DELETE FROM reservation_bicycle WHERE ID = '$id' ");
+        $delete_reservation_bicyclemodel = mysqli_query($conn, "DELETE FROM reservation_bicyclemodel WHERE ID = '$id' ");
+        $delete_reservation = mysqli_query($conn, "DELETE FROM reservation WHERE ID = '$id' ");
         //$result = mysqli_query($conn, "UPDATE bicycle SET bicycle.Status = '1' WHERE bicycle.IdentifyNumber = '$IdentifyNumber'");
         if($delete_reservation_bicyclemodel && $delete_reservation_bicycle && $delete_reservation) {
             echo "<script>alert('Removed'); window.location = '../account/profile.php?tin=$tin';</script>;";    

@@ -63,8 +63,7 @@ class ClientDAO
             $stmt->bind_param("s", $username);
             $stmt->execute();
             $result = $stmt->get_result();
-
-            $stmt->store_result();
+            // $stmt->store_result();
             if ($result->num_rows == 0) {
                 echo "<script>alert('Username or password incorret!'); history.back();</script>";
                 return;
@@ -76,7 +75,7 @@ class ClientDAO
                 session_start();
                 $_SESSION['tin'] = $result['TIN'];
                 $_SESSION['auth'] = 1;
-                echo "<script>localStorage.setItem('auth', 1); </script>";
+                // echo "<script>localStorage.setItem('auth', 1); </script>";
                 echo "<script> window.location = '../../index.php'; </script>";
                 return;
             } else {
