@@ -72,7 +72,7 @@
             $result2 = mysqli_query($conn, "INSERT INTO return_infor_bicycle (ID,IdentifyNumber) VALUES ('$id','$IdentifyNum')");
             $update = mysqli_query($conn, "UPDATE bicycle SET Status = '1' WHERE IdentifyNumber = '$IdentifyNum'");
         }
-        echo "<script>alert('Pickup success')</script>";
+        echo "<script>alert('Return Success')</script>";
     }
     ?>
     <div class="container">
