@@ -32,8 +32,8 @@
           <img src="../../assets/logo" alt="" style="width: 50px" />
         </div>
         <div class="navigation">
-          <li><a href="">HOME</a></li>
-          <li><a href="">BIKE</a></li>
+          <li><a href="../../index.php">HOME</a></li>
+          <li><a href="../bike/bike.php">BIKE</a></li>
           <li><a href="">ABOUT</a></li>
           <li><a href="">CONTACT</a></li>
           <li class="profile <?php if(isset($_SESSION['auth']) && $_SESSION['auth']==1) {echo "show";}else{echo "hide";} ?>"> 

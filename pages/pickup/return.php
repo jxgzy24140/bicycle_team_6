@@ -52,8 +52,11 @@
     $conn = Connector::Connect();
     if (isset($_GET['submit-btn'])) {
         $id = $_GET['id'];
-        $stmt = mysqli_query($conn, "SELECT reservation.ID, reservation.TIN, reservation.Name_Store, pickup_infor.Time FROM reservation INNER JOIN pickup_infor ON reservation.ID = pickup_infor.ID WHERE reservation.ID = '$id'");
-        $listBicycle = mysqli_query($conn, "SELECT * FROM reservation_bicyclemodel INNER JOIN reservation_bicycle ON reservation_bicyclemodel.ID = reservation_bicycle.ID WHERE reservation_bicycle.ID = '$id' ");
+        $listBicycle = mysqli_query($conn, "SELECT * FROM pickup_infor_bicycle INNER JOIN bicycle ON pickup_infor_bicycle.IdentifyNumber = bicycle.IdentifyNumber WHERE pickup_infor_bicycle.ID = '$id'");
+        while($row = mysqli_fetch_array($listBicycle)) {
+            $bike_id = $row['IdentifyNumber'];
+        }
+        $stmt = mysqli_query($conn, "SELECT DISTINCT store_bicycle.Name_Store FROM store_bicycle INNER JOIN pickup_infor_bicycle ON store_bicycle.IdentifyNumber = pickup_infor_bicycle.IdentifyNumber WHERE pickup_infor_bicycle.IdentifyNumber = '$bike_id';");
         if (mysqli_num_rows($stmt) == 0) {
             echo "<script>alert('This reservation not exist!')</script>";
         }
@@ -85,17 +88,15 @@
         <?php if (isset($stmt) && mysqli_num_rows($stmt) > 0) { ?>
             <div class="content">
                 <div class="infor">
-                    <?php while ($row = mysqli_fetch_array($stmt)) { ?>
-                        <p class="tile">ID: <?php echo $row['ID'] ?></p>
-                        <p class="tile">TIN: <?php echo $row['TIN'] ?></p>
+                        <p class="tile">ID: <?php echo $_GET['id'] ?></p>
+                        <p class="tile">TIN: <?php echo $_SESSION[''] ?></p>
                         <p class="tile">Store: <?php echo $row['Name_Store'] ?></p>
                         <p class="tile">Return date: <?php echo $row['Time'] ?></p>
-                    <?php } ?>
                 </div>
                 <form action="" method="POST" onSubmit="if(!confirm('Confirm return ?')){return false;}">
                     <?php while ($row = mysqli_fetch_array($listBicycle)) { ?>
                         <div class="form-group">
-                            <label for="">Model: <?php echo $row['Name_BicycleModel'] ?></label>
+                            <label for="">Model: <?php echo $row['UniqueName'] ?></label>
                             <label for="">ID: <?php echo $row['IdentifyNumber'] ?></label>
                         </div>
                     <?php } ?>
