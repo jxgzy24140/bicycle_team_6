@@ -71,7 +71,10 @@
         $TIN = $_SESSION['tin'];
         $location = $_SESSION['location'];  
         $name_store = mysqli_query($conn, "SELECT * FROM store WHERE Address LIKE '%$location%'");
-        while($row = mysqli_fetch_array($name_store)) { $Name_Store = $row['UniqueName'];}
+        while($row = mysqli_fetch_array($name_store)) 
+        { 
+            $Name_Store = $row['UniqueName'];
+        }
         $Time = $_POST['date'];
         $newReser = new Reservation($TIN, $Name_Store, $Time);
         $id = $newReser->insertReservation();

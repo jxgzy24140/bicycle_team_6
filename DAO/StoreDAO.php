@@ -12,6 +12,22 @@ class StoreDAO
         $this->store = $store;
     }
 
+    public static function updateStore(Store $store)
+    {
+        StoreDAO::$conn = Connector::Connect();
+        try {
+            $stmt = StoreDAO::$conn->prepare("UPDATE Store SET Address = ? WHERE UniqueName = ?");
+            $stmt->bind_param("ss", $store->address, $store->uniqueName);
+            $stmt->execute();
+            if($stmt->affected_rows == 0)
+                return false;
+            return true;
+        } catch (Exception $th) {
+            //throw $th;
+            echo $th;
+        }
+    }
+
     public function insert()
     {
         StoreDAO::$conn = Connector::Connect();
