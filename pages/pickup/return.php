@@ -52,20 +52,26 @@
     $conn = Connector::Connect();
     if (isset($_GET['submit-btn'])) {
         $id = $_GET['id'];
-        $listBicycle = mysqli_query($conn, "SELECT * FROM pickup_infor_bicycle INNER JOIN bicycle ON pickup_infor_bicycle.IdentifyNumber = bicycle.IdentifyNumber WHERE pickup_infor_bicycle.ID = '$id'");
-        while($row = mysqli_fetch_array($listBicycle)) {
-            $bike_id = $row['IdentifyNumber'];
+        $check_pickup = mysqli_query($conn, "SELECT * FROM pickup_infor WHERE ID = '$id'");
+        if (mysqli_num_rows($check_pickup) > 0) {
+            echo "<script>This reservation unavaiable</script>";
+        } else {
+
+            $listBicycle = mysqli_query($conn, "SELECT * FROM pickup_infor_bicycle INNER JOIN bicycle ON pickup_infor_bicycle.IdentifyNumber = bicycle.IdentifyNumber WHERE pickup_infor_bicycle.ID = '$id'");
+            // while($row = mysqli_fetch_array($listBicycle)) {
+            //     $bike_id = $row['IdentifyNumber'];
+            // }
+            $stmt = mysqli_query($conn, "SELECT DISTINCT pickup_infor.ID, pickup_infor.TIN, pickup_infor.Time, store_bicycle.Name_Store FROM pickup_infor INNER JOIN pickup_infor_bicycle ON pickup_infor.ID = pickup_infor_bicycle.ID INNER JOIN store_bicycle ON pickup_infor_bicycle.IdentifyNumber = store_bicycle.IdentifyNumber WHERE pickup_infor.ID = '$id'");
+            if (mysqli_num_rows($stmt) == 0) {
+                echo "<script>alert('This reservation not exist!')</script>";
+            }
+            $check = mysqli_query($conn, "SELECT * FROM return_infor WHERE ID = '$id'");
         }
-        $stmt = mysqli_query($conn, "SELECT DISTINCT store_bicycle.Name_Store FROM store_bicycle INNER JOIN pickup_infor_bicycle ON store_bicycle.IdentifyNumber = pickup_infor_bicycle.IdentifyNumber WHERE pickup_infor_bicycle.IdentifyNumber = '$bike_id';");
-        if (mysqli_num_rows($stmt) == 0) {
-            echo "<script>alert('This reservation not exist!')</script>";
-        }
-        $check = mysqli_query($conn, "SELECT * FROM return_infor WHERE ID = '$id'");
     }
     if (isset($_POST['submit-return'])) {
         $id = $_GET['id'];
         $date = date('d/m/y H:i:s');
-        $user = mysqli_query($conn, "SELECT TIN FROM reservation WHERE ID = '$id'");
+        $user = mysqli_query($conn, "SELECT TIN FROM pickup_infor WHERE ID = '$id'");
         while ($row = mysqli_fetch_array($user)) {
             $tin = $row['TIN'];
         }
@@ -75,6 +81,8 @@
             $result2 = mysqli_query($conn, "INSERT INTO return_infor_bicycle (ID,IdentifyNumber) VALUES ('$id','$IdentifyNum')");
             $update = mysqli_query($conn, "UPDATE bicycle SET Status = '1' WHERE IdentifyNumber = '$IdentifyNum'");
         }
+        $delete = mysqli_query($conn, "DELETE FROM pickup_infor_bicycle WHERE ID = '$id'");
+        $delete = mysqli_query($conn, "DELETE FROM pickup_infor WHERE ID = '$id'");
         echo "<script>alert('Return Success')</script>";
     }
     ?>
@@ -88,10 +96,12 @@
         <?php if (isset($stmt) && mysqli_num_rows($stmt) > 0) { ?>
             <div class="content">
                 <div class="infor">
-                        <p class="tile">ID: <?php echo $_GET['id'] ?></p>
-                        <p class="tile">TIN: <?php echo $_SESSION[''] ?></p>
+                    <?php while ($row = mysqli_fetch_array($stmt)) { ?>
+                        <p class="tile">ID: <?php echo $row['ID'] ?></p>
+                        <p class="tile">TIN: <?php echo $row['TIN'] ?></p>
                         <p class="tile">Store: <?php echo $row['Name_Store'] ?></p>
                         <p class="tile">Return date: <?php echo $row['Time'] ?></p>
+                    <?php } ?>
                 </div>
                 <form action="" method="POST" onSubmit="if(!confirm('Confirm return ?')){return false;}">
                     <?php while ($row = mysqli_fetch_array($listBicycle)) { ?>
