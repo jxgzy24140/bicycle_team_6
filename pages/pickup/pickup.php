@@ -52,7 +52,7 @@
     if (isset($_GET['submit-btn'])) {
         $id = $_GET['id'];
         $stmt = mysqli_query($conn, "SELECT * FROM reservation  WHERE ID = '$id'");
-        $listBicycle = mysqli_query($conn, "SELECT reservation_bicycle.IdentifyNumber, bicycle.UniqueName FROM reservation_bicycle INNER JOIN bicycle ON reservation_bicycle.IdentifyNumber = bicycle.IdentifyNumber WHERE reservation_bicycle.ID = '$id'        ");
+        $listBicycle = mysqli_query($conn, "SELECT * FROM reservation_bicyclemodel INNER JOIN reservation_bicycle ON reservation_bicyclemodel.ID = reservation_bicycle.ID WHERE reservation_bicycle.ID = '$id' ");
         if (mysqli_num_rows($stmt) == 0) {
             echo "<script>alert('This reservation not exist!')</script>";
         }
@@ -103,7 +103,7 @@
                 <form action="" method="POST" onSubmit="if(!confirm('Is correctly ?')){return false;}">
                     <?php while ($row = mysqli_fetch_array($listBicycle)) { ?>
                         <div class="form-group">
-                        <label for="">Model: <?php echo $row['UniqueName'] ?></label>
+                            <label for="">Model: <?php echo $row['Name_BicycleModel'] ?></label>
                             <label for="">ID: <?php echo $row['IdentifyNumber'] ?></label>
                         </div>
                     <?php } ?>
