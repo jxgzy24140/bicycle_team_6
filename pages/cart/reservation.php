@@ -20,12 +20,14 @@
     class Reservation {
         public $tin;
         public $nameStore;
+        public $days;
         public $time;
 
-        public function __construct($tin, $nameStore, $time)
+        public function __construct($tin, $nameStore, $days, $time)
         {
           $this->tin = $tin;
           $this->nameStore = $nameStore;
+          $this->days = $days;
           $this->time = $time;
         }
 
@@ -37,7 +39,7 @@
 
         public function insertReservation() {
             $conn = $this->connect();
-            $sql = "INSERT INTO reservation(TIN,Name_Store,Time) VALUES('$this->tin','$this->nameStore','$this->time')";
+            $sql = "INSERT INTO reservation(TIN,Name_Store,days_to_rent,Time) VALUES('$this->tin','$this->nameStore','$this->days','$this->time')";
             mysqli_query($conn, $sql);
             return mysqli_insert_id($conn);
         }
@@ -76,7 +78,8 @@
             $Name_Store = $row['UniqueName'];
         }
         $Time = $_POST['date'];
-        $newReser = new Reservation($TIN, $Name_Store, $Time);
+        $days = $_POST['days'];
+        $newReser = new Reservation($TIN, $Name_Store,$days, $Time);
         $id = $newReser->insertReservation();
         foreach ($_SESSION['reservation'] as $key => $value) {
             $result2 = $newReser->insertReserBicycleModel($id, $key);
@@ -107,9 +110,8 @@
                         <h3>Bicycle Model: <?php echo $row['UniqueName']; $uniqueName = $row['UniqueName']; ?></h3>
                         <p>Type: <?php echo $row['Type'] ?></p>
                         <p>Gear: <?php echo $row['Gear'] ?></p>
-                        <p>Quantity: <?php echo $_POST[$key] ?></p>
+                        <p>Quantity: <span class="quantity"><?php echo $_POST[$key] ?></span></p>
                         <?php if(!isset($_SESSION['quantity'])) { $_SESSION['quantity'] = array(); } else { $_SESSION['quantity'][$uniqueName] = $_POST[$key];} ?>
-                        
                     </div>
             <?php }
             }  ?>
@@ -118,13 +120,34 @@
             </div>
             <div class="form-group">
                 <label for="">PICK-UP DATE: </label>
-                <input type="date" name="date">
+                <input type="date" name="date" >
+            </div>
+            <div class="form-group">
+                <label for="">Days: </label>
+                <input type="number" class="num-of-rent" min="1" value="1" name="days" required>
+            </div>
+            <div class="form-group">
+                <label for="">TOTAL PRICE:</label>
+                <p class="total-price"></p>
             </div>
             <div class="submit-form-group form-group">
                 <input type="submit" name="submit-reser" value="BOOK" class="submitBtn" />
             </div>
         </form>
     </div>
+    <script>
+        const listQuantity = document.querySelectorAll('.quantity')
+        const price = document.querySelector('.total-price') 
+        const numOfRent = document.querySelector('.num-of-rent')
+        let sum = 0
+        listQuantity.forEach(e => {
+            sum = sum + parseInt(e.outerText)
+        })
+        price.innerHTML = numOfRent.value * sum * 100000 + " VND"
+        numOfRent.onchange = (e) => {
+            price.innerHTML = e.target.value * sum * 100000 + " VND"
+        }
+    </script>
 </body>
 
 </html>

@@ -52,7 +52,7 @@
     if (isset($_GET['submit-btn'])) {
         $id = $_GET['id'];
         $stmt = mysqli_query($conn, "SELECT * FROM reservation  WHERE ID = '$id'");
-        $listBicycle = mysqli_query($conn, "SELECT * FROM reservation_bicyclemodel INNER JOIN reservation_bicycle ON reservation_bicyclemodel.ID = reservation_bicycle.ID WHERE reservation_bicycle.ID = '$id' ");
+        $listBicycle = mysqli_query($conn, "SELECT reservation_bicycle.IdentifyNumber, bicycle.UniqueName FROM reservation_bicycle INNER JOIN bicycle ON reservation_bicycle.IdentifyNumber = bicycle.IdentifyNumber WHERE reservation_bicycle.ID = '$id'        ");
         if (mysqli_num_rows($stmt) == 0) {
             echo "<script>alert('This reservation not exist!')</script>";
         }
@@ -92,19 +92,23 @@
                         <p class="tile">ID: <?php echo $row['ID'] ?></p>
                         <p class="tile">TIN: <?php echo $row['TIN'] ?></p>
                         <p class="tile">Store: <?php echo $row['Name_Store'] ?></p>
-                        <p class="tile">Pickup time: <?php echo $row['Time'] ?></p>
+                        <!-- <p class="tile">Pickup time: <?php echo $row['Time'] ?></p> -->
+                        <label for="">Pickup Date: </label>
+                        <input type="date" name="return-date" disabled value="<?php echo $row['Time'];?>">
+                        <br>
+                        <label for="">Return Date: </label>
+                        <input type="date" name="return-date" disabled value="<?php $Date = $row['Time'];$days = $row['days_to_rent']; echo date('Y-m-d', strtotime($Date.'+'. $days.' days')); ?>">
                     <?php } ?>
                 </div>
                 <form action="" method="POST" onSubmit="if(!confirm('Is correctly ?')){return false;}">
                     <?php while ($row = mysqli_fetch_array($listBicycle)) { ?>
                         <div class="form-group">
-                            <label for="">Model: <?php echo $row['Name_BicycleModel'] ?></label>
+                        <label for="">Model: <?php echo $row['UniqueName'] ?></label>
                             <label for="">ID: <?php echo $row['IdentifyNumber'] ?></label>
                         </div>
                     <?php } ?>
                     <div class="form-group">
-                        <label for="">Return Date: </label>
-                        <input type="date" name="return-date">
+
                         <div style="padding: 20px">
                             <input type="submit" name="submit-pickup" value="Confirm" <?php if (isset($check) && mysqli_num_rows($check) > 0 || isset($check2) && mysqli_num_rows($check2) > 0) {
                                                                                             echo "disabled";

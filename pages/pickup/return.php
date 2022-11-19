@@ -53,9 +53,9 @@
     if (isset($_GET['submit-btn'])) {
         $id = $_GET['id'];
         $check_pickup = mysqli_query($conn, "SELECT * FROM pickup_infor WHERE ID = '$id'");
-        if (mysqli_num_rows($check_pickup) > 0) {
-            echo "<script>This reservation unavaiable</script>";
-        } else {
+        // if (mysqli_num_rows($check_pickup) > 0) {
+        //     echo "<script>This reservation unavaiable</script>";
+        // } else {
 
             $listBicycle = mysqli_query($conn, "SELECT * FROM pickup_infor_bicycle INNER JOIN bicycle ON pickup_infor_bicycle.IdentifyNumber = bicycle.IdentifyNumber WHERE pickup_infor_bicycle.ID = '$id'");
             // while($row = mysqli_fetch_array($listBicycle)) {
@@ -67,7 +67,7 @@
             }
             $check = mysqli_query($conn, "SELECT * FROM return_infor WHERE ID = '$id'");
         }
-    }
+    // }
     if (isset($_POST['submit-return'])) {
         $id = $_GET['id'];
         $date = date('d/m/y H:i:s');
@@ -83,7 +83,7 @@
         }
         $delete = mysqli_query($conn, "DELETE FROM pickup_infor_bicycle WHERE ID = '$id'");
         $delete = mysqli_query($conn, "DELETE FROM pickup_infor WHERE ID = '$id'");
-        echo "<script>alert('Return Success')</script>";
+        echo "<script>alert('Return Success'); window.location='return.php'</script>";
     }
     ?>
     <div class="container">
@@ -93,7 +93,7 @@
                 <input type="submit" value="Search...." name="submit-btn">
             </form>
         </div>
-        <?php if (isset($stmt) && mysqli_num_rows($stmt) > 0) { ?>
+        <?php if (isset($listBicycle) && mysqli_num_rows($listBicycle) > 0) { ?>
             <div class="content">
                 <div class="infor">
                     <?php while ($row = mysqli_fetch_array($stmt)) { ?>
