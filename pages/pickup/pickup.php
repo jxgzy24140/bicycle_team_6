@@ -52,7 +52,7 @@
     if (isset($_GET['submit-btn'])) {
         $id = $_GET['id'];
         $stmt = mysqli_query($conn, "SELECT * FROM reservation  WHERE ID = '$id'");
-        $listBicycle = mysqli_query($conn, "SELECT * FROM reservation_bicyclemodel INNER JOIN reservation_bicycle ON reservation_bicyclemodel.ID = reservation_bicycle.ID WHERE reservation_bicycle.ID = '$id' ");
+        $listBicycle = mysqli_query($conn, "SELECT reservation_bicycle.IdentifyNumber, bicycle.UniqueName FROM reservation_bicycle INNER JOIN bicycle ON reservation_bicycle.IdentifyNumber = bicycle.IdentifyNumber WHERE reservation_bicycle.ID = '$id'        ");
         if (mysqli_num_rows($stmt) == 0) {
             echo "<script>alert('This reservation not exist!')</script>";
         }
@@ -98,13 +98,17 @@
                         <br>
                         <label for="">Return Date: </label>
                         <input type="date" name="return-date" disabled value="<?php $Date = $row['Time'];$days = $row['days_to_rent']; echo date('Y-m-d', strtotime($Date.'+'. $days.' days')); ?>">
+                        <input style="display: none" class="days-to-rent" value="<?php echo $row['days_to_rent'] ?>">
+                        <div class="total-price">
+                            Total: <span class="price"></span> VND
+                        </div>
                     <?php } ?>
                 </div>
                 <form action="" method="POST" onSubmit="if(!confirm('Is correctly ?')){return false;}">
                     <?php while ($row = mysqli_fetch_array($listBicycle)) { ?>
                         <div class="form-group">
-                            <label for="">Model: <?php echo $row['Name_BicycleModel'] ?></label>
-                            <label for="">ID: <?php echo $row['IdentifyNumber'] ?></label>
+                            <label for="">Model: <?php echo $row['UniqueName'] ?></label>
+                            <label class="bikes" for="">ID: <?php echo $row['IdentifyNumber'] ?></label>
                         </div>
                     <?php } ?>
                     <div class="form-group">
@@ -119,6 +123,11 @@
             </div>
         <?php } ?>
     </div>
+    <script>
+        const listBike = document.querySelectorAll('.bikes')
+        const days = document.querySelector('.days-to-rent')
+        const showPrice = document.querySelector('.price').innerHTML = days.value * listBike.length * 100000
+    </script>
 </body>
 
 </html>
