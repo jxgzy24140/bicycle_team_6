@@ -109,7 +109,7 @@
                                         <a href="./detail.php?name=<?php echo $bicycleModel->uniqueName ?>">
                                             <img src="../../assets/homethumb.jpg" alt="" />
                                         </a>
-                                        <a href="./detail.php?name=<?php echo $bicycleModel->uniqueName ?>" class="rentBtn">Rent Now</a>
+                                        <a href="./detail.php?name=<?php echo $bicycleModel->uniqueName ?>" class="rentBtn">Buy Now</a>
                                     </div>
                                     <p class="title"><?php echo $bicycleModel->uniqueName ?></p>
                                 </div>

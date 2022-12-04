@@ -1,60 +1,67 @@
 * {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 body {
-    min-height: 100vh;
-    background-color: #ccc;
+  min-height: 100vh;
+  background-color: #ccc;
 }
 
 .reser-popup {
+  position: absolute;
+  min-height: 90%;
+  width: 40%;
+  background-color: rgb(228, 110, 13);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  .close {
     position: absolute;
-    min-height: 80%;
-    width: 40%;
-    background-color: rgb(228, 110, 13);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    .close {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      button {
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        font-size: 24px;
-      }
-    }
-    .submit-form-group {
-        position: absolute;
-        bottom: 0;
-    }
-    .form-group {
-      width: 100%;
-      padding: 10px 10px;
-      color: white;
-      box-sizing: border-box;
-      label {
-        display: block;
-        padding: 10px 0;
-      }
-      select,
-      input {
-        width: 100%;
-        padding: 10px 0;
-        border: 1px solid var(--yellow);
-      }
-      select,
-      input:focus {
-        outline: none;
-      }
-      .submitBtn {
-        cursor: pointer;
-      }
-      .submitBtn:hover {
-        opacity: 0.7;
-      }
+    right: 10px;
+    top: 10px;
+    button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 24px;
     }
   }
+  .submit-form-group {
+    position: absolute;
+    bottom: 0;
+  }
+  .form-group {
+    width: 100%;
+    padding: 10px 10px;
+    color: white;
+    box-sizing: border-box;
+    label {
+      display: block;
+      padding: 10px 0;
+    }
+    select,
+    input {
+      width: 100%;
+      padding: 10px 0;
+      border: 1px solid var(--yellow);
+    }
+    select,
+    input:focus {
+      outline: none;
+    }
+    .submitBtn {
+      cursor: pointer;
+    }
+    .submitBtn:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}

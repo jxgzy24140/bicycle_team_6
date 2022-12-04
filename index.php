@@ -157,7 +157,7 @@
               </select>
             <?php } ?>
           </div> -->
-                    <button name="addBtn" type="submit" class="book-btn">BOOK NOW!</button>
+                    <button name="addBtn" type="submit" class="book-btn">BUY NOW!</button>
                 </form>
             </div>
             <div class="main__right">

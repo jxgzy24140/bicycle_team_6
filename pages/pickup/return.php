@@ -53,18 +53,11 @@
     if (isset($_GET['submit-btn'])) {
         $id = $_GET['id'];
         $check_pickup = mysqli_query($conn, "SELECT * FROM pickup_infor WHERE ID = '$id'");
-        if (mysqli_num_rows($check_pickup) > 0) {
+        if (mysqli_num_rows($check_pickup) == 0) {
             echo "<script>This reservation unavaiable</script>";
         } else {
-
             $listBicycle = mysqli_query($conn, "SELECT * FROM pickup_infor_bicycle INNER JOIN bicycle ON pickup_infor_bicycle.IdentifyNumber = bicycle.IdentifyNumber WHERE pickup_infor_bicycle.ID = '$id'");
-            // while($row = mysqli_fetch_array($listBicycle)) {
-            //     $bike_id = $row['IdentifyNumber'];
-            // }
             $stmt = mysqli_query($conn, "SELECT DISTINCT pickup_infor.ID, pickup_infor.TIN, pickup_infor.Time, store_bicycle.Name_Store FROM pickup_infor INNER JOIN pickup_infor_bicycle ON pickup_infor.ID = pickup_infor_bicycle.ID INNER JOIN store_bicycle ON pickup_infor_bicycle.IdentifyNumber = store_bicycle.IdentifyNumber WHERE pickup_infor.ID = '$id'");
-            if (mysqli_num_rows($stmt) == 0) {
-                echo "<script>alert('This reservation not exist!')</script>";
-            }
             $check = mysqli_query($conn, "SELECT * FROM return_infor WHERE ID = '$id'");
         }
     }
@@ -93,14 +86,15 @@
                 <input type="submit" value="Search...." name="submit-btn">
             </form>
         </div>
-        <?php if (isset($listBicycle) && mysqli_num_rows($listBicycle) > 0) { ?>
+        <?php if (isset($stmt) && mysqli_num_rows($stmt) > 0) { ?>
             <div class="content">
                 <div class="infor">
                     <?php while ($row = mysqli_fetch_array($stmt)) { ?>
-                        <p class="tile">ID: <?php echo $row['ID'] ?></p>
-                        <p class="tile">TIN: <?php echo $row['TIN'] ?></p>
-                        <p class="tile">Store: <?php echo $row['Name_Store'] ?></p>
-                        <p class="tile">Return date: <?php echo $row['Time'] ?></p>
+                        <p >ID: <?php echo $row['ID'] ?></p>
+                        <p >TIN: <?php echo $row['TIN'] ?></p>
+                        <p >Store: <?php echo $row['Name_Store'] ?></p>
+                        <p >Return date: <?php echo $row['Time'] ?></p>
+                        <!-- <span>Total price: </span> <span class="price"></span> VNĐ -->
                     <?php } ?>
                 </div>
                 <form action="" method="POST" onSubmit="if(!confirm('Confirm return ?')){return false;}">

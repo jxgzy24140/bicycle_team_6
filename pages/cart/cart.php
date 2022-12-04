@@ -98,9 +98,18 @@
             <div id="content">
                 <div class="content__container">
                     <h2 style="padding-bottom: 20px">Your Cart</h2>
-                    <p>PICK-UP LOCATION: <?php echo $_SESSION['location'] ?></p>
-                    <?php if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) { ?>
-                        <form id="cart-form" method="POST" action="./reservation.php">
+                    <form id="cart-form" method="POST" action="./reservation.php">
+                        <div class="ship-option">
+                            <div class="form-group" style="display: inline-block">
+                                <label for="">Giao hàng tận nơi</label>
+                                <input type="checkbox" name="ship" class="chk">
+                            </div>
+                            <div class="form-group" style="display: inline-block">
+                                <label for="">Lấy tại cửa hàng</label>
+                                <input type="checkbox" name="pickup" class="chk">
+                            </div>
+                        </div>
+                        <?php if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) { ?>
                             <table class="table" style="width: 100%; text-align:center; margin-top: 10px">
                                 <thead>
                                     <tr>
@@ -142,25 +151,25 @@
                                                                     echo $key;
                                                                 }
                                                                 ?>" <?php if (isset($location)) {
-                                                        //                 $name_store = mysqli_query($conn, "SELECT UniqueName FROM store WHERE Address LIKE '%$location%'");
-                                                        //                 while ($name_store_row = mysqli_fetch_array($name_store)) {
-                                                        //                     $UniqueNameStore = $name_store_row['UniqueName'];
-                                                        //                 }
-                                                        //                 $max_run = mysqli_query($conn, "SELECT COUNT(bicycle.IdentifyNumber) FROM store_bicycle 
-                                                        // INNER JOIN bicycle ON store_bicycle.IdentifyNumber = bicycle.IdentifyNumber
-                                                        // AND store_bicycle.Name_Store = '$UniqueNameStore' AND bicycle.Status = '1' 
-                                                        // AND bicycle.UniqueName LIKE '%$bike%';");
-                                                        //                 while ($max = mysqli_fetch_array($max_run)) {
-                                                        //                     $max_value = $max['COUNT(bicycle.IdentifyNumber)'];
-                                                        //                 }
+                                                                        //                 $name_store = mysqli_query($conn, "SELECT UniqueName FROM store WHERE Address LIKE '%$location%'");
+                                                                        //                 while ($name_store_row = mysqli_fetch_array($name_store)) {
+                                                                        //                     $UniqueNameStore = $name_store_row['UniqueName'];
+                                                                        //                 }
+                                                                        //                 $max_run = mysqli_query($conn, "SELECT COUNT(bicycle.IdentifyNumber) FROM store_bicycle 
+                                                                        // INNER JOIN bicycle ON store_bicycle.IdentifyNumber = bicycle.IdentifyNumber
+                                                                        // AND store_bicycle.Name_Store = '$UniqueNameStore' AND bicycle.Status = '1' 
+                                                                        // AND bicycle.UniqueName LIKE '%$bike%';");
+                                                                        //                 while ($max = mysqli_fetch_array($max_run)) {
+                                                                        //                     $max_value = $max['COUNT(bicycle.IdentifyNumber)'];
+                                                                        //                 }
                                                                         $max_value = $storeDAO->getNumberOfBicycleBelongToSpecificModel($bicycleModel->uniqueName);
                                                                         if ($max_value != 0) {
                                                                             echo $max_value;
                                                                     ?> type="number" value="1" min="1" max="<?php echo $max_value ?>" <?php
                                                                                                                                     } else {
                                                                                                                                         ?> type="text" value="This product is not available here" disabled <?php
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                        } ?> />
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                    } ?> />
                                             </td>
                                             <td>
                                                 <input name="sessionKey" type="text" value="<?php echo $key ?>" style="display: none" />
@@ -173,15 +182,20 @@
                                 </tbody>
                             </table>
                             <div>
-                                <input type="submit" name="submit-cart" class="book-btn" value="Make Reservation" />
+                                <input type="submit" name="submit-cart" class="book-btn" value="PAY" />
                             </div>
-                        </form>
-                    <?php } ?>
+                    </form>
+                <?php } ?>
                 </div>
             </div>
         </div>
 
     </div>
+    <script>
+        $('input.chk').on('change', function() {
+            $('input.chk').not(this).prop('checked', false);
+        });
+    </script>
 </body>
 
 </html>

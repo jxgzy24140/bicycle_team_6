@@ -10,7 +10,7 @@ body {
 
 .reser-popup {
   position: absolute;
-  min-height: 80%;
+  min-height: 90%;
   width: 40%;
   background-color: rgb(228, 110, 13);
   top: 50%;
@@ -57,4 +57,12 @@ body {
 }
 .reser-popup .form-group .submitBtn:hover {
   opacity: 0.7;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
 }/*# sourceMappingURL=reservation.css.map */
